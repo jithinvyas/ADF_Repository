@@ -67,7 +67,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select top 3 * from ',\nitem().schemaName,\n'.',\nitem().tableName)",
+										"value": "@concat('select top 3 * from ',\nitem().schemaName,\n'.',\nitem().tableName,\n' where convert(Date, ModifiedDate) = convert(Date, getdate())'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
