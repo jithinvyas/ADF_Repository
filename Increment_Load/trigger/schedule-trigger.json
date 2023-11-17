@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Full_Load_Pipeline",
+					"referenceName": "Incremental_Load_Pipeline",
 					"type": "PipelineReference"
 				}
 			}
