@@ -116,7 +116,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"path": {
-											"value": "@concat('sql-adv-db/',\nitem().schemaName,\n'/',\nitem().tableName,\n'/',\nformatDateTime(utcnow(), 'dd-MM-yyyy')\n)",
+											"value": "@concat('sql-adv-db/',\nitem().schemaName,\n'/',\nitem().tableName,\n'/',\nformatDateTime(utcnow(), 'yyyy-MM-dd')\n)",
 											"type": "Expression"
 										},
 										"contName": "adv-data"
