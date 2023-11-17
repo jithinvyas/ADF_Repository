@@ -1,7 +1,6 @@
 {
-	"name": "Full_Load_Pipeline",
+	"name": "Incremental_Load_Pipeline",
 	"properties": {
-		"description": "Loads all the tables inside the adventure-works database into ADLS",
 		"activities": [
 			{
 				"name": "querySchema",
