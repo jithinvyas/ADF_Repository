@@ -1,0 +1,17 @@
+{
+	"name": "DS_File_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL_Source",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "File_Source"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
