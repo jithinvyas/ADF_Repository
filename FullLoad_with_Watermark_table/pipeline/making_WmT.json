@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "making_WmT",
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup_WatermarkTable",
+				"name": "Watermark_Lookup",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -21,13 +21,13 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "DS_Watermark_Source",
+						"referenceName": "DS_Watermark",
 						"type": "DatasetReference"
 					}
 				}
 			},
 			{
-				"name": "Lookup_FileSource",
+				"name": "FileSource_Lookup",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -42,14 +42,14 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "select max(LastModifyTime) as LatestDate from File_Source",
+							"value": "select max(LastModifytime) as LatestDate from File_Source",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "DS_SQL_Source",
+						"referenceName": "DS_FileSource",
 						"type": "DatasetReference"
 					}
 				}
@@ -59,13 +59,13 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Lookup_WatermarkTable",
+						"activity": "Watermark_Lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "Lookup_FileSource",
+						"activity": "FileSource_Lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -83,7 +83,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "select * from File_Source\nwhere LastModifytime > \t'@{activity('Lookup_WatermarkTable').output.firstRow.WatermarkValue}'\n\t\tand\n\t  LastModifytime <= '@{activity('Lookup_FileSource').output.firstRow.LatestDate}",
+							"value": "select * from File_Source\nwhere LastModifytime > '@{activity('Watermark_Lookup').output.firstRow.WatermarkValue}'\nand\nLastModifytime <= '@{activity('FileSource_Lookup').output.firstRow.LatestDate}'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -112,22 +112,65 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_File_Source",
+						"referenceName": "DS_Copy_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_Destination",
+						"referenceName": "DS_Adls2_destination",
 						"type": "DatasetReference",
 						"parameters": {
 							"fileName": {
-								"value": "@concat('File=',pipeline().RunId)",
+								"value": "@concat('File=','Updated_Results')",
 								"type": "Expression"
 							}
 						}
 					}
 				]
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_Update_WatermarkTable]",
+					"storedProcedureParameters": {
+						"LastModifyTime": {
+							"value": {
+								"value": "@activity('FileSource_Lookup').output.firstRow.LatestDate",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"TableName": {
+							"value": {
+								"value": "@activity('Watermark_Lookup').output.firstRow.TableName",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SQL_Source",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": [],
