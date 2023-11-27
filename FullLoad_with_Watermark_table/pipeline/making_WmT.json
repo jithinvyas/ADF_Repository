@@ -17,13 +17,18 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "select TableName, WatermarkValue\nfrom watermarktable\nwhere TableName = '@{pipeline().parameters.tableName}'",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "DS_Watermark",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": true
 				}
 			},
 			{
@@ -42,7 +47,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "select max(LastModifytime) as LatestDate from File_Source",
+							"value": "select max(@{pipeline().parameters.watermarkColumn}) as LatestDate from @{pipeline().parameters.tableName}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -83,7 +88,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "select * from File_Source\nwhere LastModifytime > '@{activity('Watermark_Lookup').output.firstRow.WatermarkValue}'\nand\nLastModifytime <= '@{activity('FileSource_Lookup').output.firstRow.LatestDate}'",
+							"value": "select * from @{activity('Watermark_Lookup').output.firstRow.TableName}\nwhere @{pipeline().parameters.watermarkColumn} > '@{activity('Watermark_Lookup').output.firstRow.WatermarkValue}'\nand\n@{pipeline().parameters.watermarkColumn} <= '@{activity('FileSource_Lookup').output.firstRow.LatestDate}'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -173,6 +178,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"tableName": {
+				"type": "string"
+			},
+			"watermarkColumn": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-11-22T13:21:18Z"
 	},
