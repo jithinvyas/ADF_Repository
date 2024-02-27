@@ -1,0 +1,16 @@
+{
+	"name": "LS_SQLserver",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=D101466\\SQL_SERVER;initial catalog=IncrementalDB;user id=sa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5Zjg4MDcxNC1hYWYyLTRiNzAtODdlZi0yMTk2MDAwN2MzODEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "Selfhost-IR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

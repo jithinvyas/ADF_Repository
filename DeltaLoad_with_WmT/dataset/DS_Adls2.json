@@ -1,0 +1,28 @@
+{
+	"name": "DS_Adls2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "file-1.csv",
+				"folderPath": {
+					"value": "@concat(formatDateTime(utcNow(), 'yyyy-MM-dd'),'/',pipeline().RunId)",
+					"type": "Expression"
+				},
+				"fileSystem": "updated-files"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

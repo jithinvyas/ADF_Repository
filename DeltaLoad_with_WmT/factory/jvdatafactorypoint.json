@@ -1,0 +1,9 @@
+{
+	"name": "jvdatafactorypoint",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d9c41c8f-c720-475f-aa4f-c6c6cbbbe675",
+		"tenantId": "61e5c0a0-e0b8-45ad-8f08-7e6af8a9e292"
+	}
+}
