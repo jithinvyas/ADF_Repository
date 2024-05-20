@@ -1,0 +1,16 @@
+{
+	"name": "LS_Sqlserver",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=D101466\\SQL_SERVER;initial catalog=dropdb;user id=sa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMzZlM2U4MC1mYTlkLTRmMjMtYmZlZC04MGI1YWY3NTA0OTkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "selfhost-IR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
